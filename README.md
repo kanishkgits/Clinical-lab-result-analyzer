@@ -14,6 +14,18 @@ A full-stack implementation of the supplied **GenAI + Full-Stack Assignment: Cli
 
 The assignment requires an MCP server and says all communication should be handled by the Agent; this implementation therefore has FastAPI calling an Agent, and the Agent calls the MCP server tools rather than having FastAPI call the MCP tools directly.
 
+## Application Screenshots
+
+### Laboratory Results Input
+Users can enter laboratory results manually or upload a CSV file for batch analysis.
+![Laboratory Results Input](media/ui1.png)
+
+### Severity Classification & Results
+The analyzer displays results according to their calculated severity and reference ranges.
+
+![Analysis Results 1](media/ui2.png)
+![Analysis Results 2](media/ui3.png)
+
 ## Architecture
 
 ```text
