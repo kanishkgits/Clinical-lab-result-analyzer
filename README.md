@@ -2,6 +2,48 @@
 
 A full-stack implementation of the supplied **GenAI + Full-Stack Assignment: Clinical Lab Results Analyzer**.
 
+## Live Demo
+
+> **Important:** The application is hosted on Render's free tier. The backend services may go to sleep after a period of inactivity.
+>
+> Before opening the live application, **open the API and MCP links below once** to wake up the services. Wait a few seconds for each service to respond, then open the live frontend.
+
+### 1. Wake up the FastAPI Backend
+
+Open: https://clinical-lab-api.onrender.com
+
+
+### 2. Wake up the MCP Server
+
+Open: https://clinical-lab-mcp.onrender.com/mcp
+
+
+### 3. Open the Live Application
+
+After waking up both backend services, open:
+
+**[Clinical Lab Results Analyzer – Live Demo](https://clinical-lab-analyzer-6m91.onrender.com/)**
+
+The application allows you to:
+
+- Enter laboratory test results manually
+- Upload laboratory results using CSV
+- Compare results against reference ranges
+- Classify results as **Normal, Warning, or Critical**
+- Route results according to severity
+- Generate AI-powered explanations using Gemini
+- View recommended follow-up actions
+- Inspect the reference range and classification reasoning
+
+### Deployment Links
+
+| Component | URL |
+|---|---|
+| **Frontend / Live Demo** | https://clinical-lab-analyzer-6m91.onrender.com/ |
+| **FastAPI Backend** | https://clinical-lab-api.onrender.com |
+| **FastAPI Swagger** | https://clinical-lab-api.onrender.com/docs |
+| **MCP Server** | https://clinical-lab-mcp.onrender.com/mcp |
+
 ## Assignment mapping
 
 - `POST /analyze_labs` accepts lab name, value and unit.
