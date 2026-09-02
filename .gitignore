@@ -1,7 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+backend/.ipynb_checkpoints/
+
+# Environment variables
+.env
 backend/.env
+frontend/.env
 venv/
+
+# Temporary/lock files
+backend/data/.~lock.*#
+
+# Old/unused reference data
+backend/data/reference_ranges.json
+
+# Node
 frontend/node_modules/
 frontend/dist/
-__pycache__/
-*.pyc
-.DS_Store
