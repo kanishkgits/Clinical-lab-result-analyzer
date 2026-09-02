@@ -7,18 +7,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from google import genai
 from mcp.server.mcpserver import MCPServer
+from mcp.server.transport_security import TransportSecuritySettings
 from pydantic import BaseModel, Field
-
-
-# ============================================================
-# PATHS AND ENVIRONMENT
-# ============================================================
-
-# server.py is located at:
-# backend/mcp_server/server.py
-#
-# parents[1] therefore points to:
-# backend/
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
@@ -331,4 +321,16 @@ Also provide a cautious recommended follow-up step.
         ),
     }
 
-app = mcp.streamable_http_app()
+security = TransportSecuritySettings(
+    allowed_hosts=[
+        "clinical-lab-mcp.onrender.com",
+        "clinical-lab-mcp.onrender.com:*",
+    ],
+    allowed_origins=[
+        "https://clinical-lab-mcp.onrender.com",
+    ],
+)
+
+app = mcp.streamable_http_app(
+    transport_security=security
+)
