@@ -1,9 +1,11 @@
-import { useState } from "react";
 import Papa from "papaparse";
+import { useState } from "react";
+
 import LabInput from "./components/LabInput";
 import ResultsDisplay from "./components/ResultsDisplay";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 export default function App() {
   const [results, setResults] = useState([]);
@@ -20,83 +22,219 @@ export default function App() {
     try {
       const response = await fetch(`${API_URL}/analyze_labs`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ labs }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          labs,
+        }),
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.detail || "Analysis failed");
+      let data;
 
-      setResults(data.results);
-      setSummary(data.summary);
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Server returned an invalid response.");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail || "Laboratory analysis failed."
+        );
+      }
+
+      setResults(data.results || []);
+      setSummary(data.summary || null);
     } catch (err) {
-      setError(err.message);
+      setError(
+        err.message ||
+          "Unable to connect to the analysis server."
+      );
     } finally {
       setLoading(false);
     }
   }
 
   function handleCsv(file) {
+    if (!file) {
+      return;
+    }
+
+    setError("");
+
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
+
       complete: ({ data, errors }) => {
-        if (errors.length) {
-          setError("Could not parse the CSV file.");
+        if (errors && errors.length > 0) {
+          setError(
+            "Could not parse the CSV file. Please check its format."
+          );
           return;
         }
 
         const labs = data.map((row) => ({
-          test_name: row.Test_Name || row.test_name,
-          value: Number(row.Result ?? row.value),
-          unit: row.Unit || row.unit,
-          date: row.Date || row.date || null,
+          test_name:
+            row.Test_Name ||
+            row.test_name ||
+            "",
+
+          value: Number(
+            row.Result ?? row.value
+          ),
+
+          unit:
+            row.Unit ||
+            row.unit ||
+            "",
+
+          date:
+            row.Date ||
+            row.date ||
+            null,
         }));
 
-        if (labs.some((x) => !x.test_name || !Number.isFinite(x.value) || !x.unit)) {
-          setError("CSV must contain Test_Name, Result and Unit columns with valid values.");
+        const invalid = labs.some(
+          (lab) =>
+            !lab.test_name ||
+            !Number.isFinite(lab.value) ||
+            !lab.unit
+        );
+
+        if (invalid) {
+          setError(
+            "CSV must contain Test_Name, Result and Unit columns with valid values."
+          );
           return;
         }
+
         analyzeLabs(labs);
+      },
+
+      error: () => {
+        setError(
+          "Unable to read the CSV file."
+        );
       },
     });
   }
 
   return (
     <main className="page">
+
+      {}
+
       <header className="hero">
+
         <div>
-          <span className="eyebrow">GENAI + FULL-STACK</span>
-          <h1>Clinical Lab Results Analyzer</h1>
+          <span className="eyebrow">
+            LabRinth
+          </span>
+
+          <h1>
+            Clinical Lab Results Analyzer
+          </h1>
+
           <p>
-            Explainable laboratory-result analysis using deterministic reference-range
-            classification, MCP agent routing, and Gemini-generated explanations.
+            Explainable laboratory-result analysis using
+            deterministic reference-range classification,
+            MCP agent routing, and Gemini-generated
+            explanations.
           </p>
         </div>
+
         <div className="pipeline">
-          <span>Classify</span><b>→</b><span>Route</span><b>→</b><span>Explain</span>
+          <span>Classify</span>
+          <b>→</b>
+          <span>Route</span>
+          <b>→</b>
+          <span>Explain</span>
         </div>
+
       </header>
 
+
+      {}
+
       <section className="card">
-        <LabInput onAnalyze={analyzeLabs} onCsv={handleCsv} loading={loading} />
+        <LabInput
+          onAnalyze={analyzeLabs}
+          onCsv={handleCsv}
+          loading={loading}
+        />
       </section>
 
-      {error && <div className="error">{error}</div>}
+
+      {}
+
+      {error && (
+        <div className="error">
+          {error}
+        </div>
+      )}
+
+
+      {}
 
       {summary && (
         <section className="summary-grid">
-          <div className="summary critical"><strong>{summary.critical}</strong><span>Critical</span></div>
-          <div className="summary warning"><strong>{summary.warning}</strong><span>Warning</span></div>
-          <div className="summary normal"><strong>{summary.normal}</strong><span>Normal</span></div>
+
+          <div className="summary critical">
+            <strong>
+              {summary.critical}
+            </strong>
+
+            <span>
+              Critical
+            </span>
+          </div>
+
+
+          <div className="summary warning">
+            <strong>
+              {summary.warning}
+            </strong>
+
+            <span>
+              Warning
+            </span>
+          </div>
+
+
+          <div className="summary normal">
+            <strong>
+              {summary.normal}
+            </strong>
+
+            <span>
+              Normal
+            </span>
+          </div>
+
         </section>
       )}
 
-      {results.length > 0 && <ResultsDisplay results={results} />}
+
+      {}
+
+      {results.length > 0 && (
+        <ResultsDisplay
+          results={results}
+        />
+      )}
+
+
+      {}
 
       <footer>
-        <strong>Important:</strong> This demo provides decision-support explanations only. It does not diagnose conditions or replace professional medical advice.
+        <strong>Important:</strong>{" "}
+        This demo provides decision-support explanations
+        only. It does not diagnose conditions or replace
+        professional medical advice.
       </footer>
+
     </main>
   );
 }

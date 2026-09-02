@@ -1,11 +1,31 @@
 import { useState } from "react";
 
 const defaultRows = [
-  { test_name: "Ferritin", value: "28.9", unit: "ug/L" },
-  { test_name: "Glycated Hemoglobin (HbA1c)", value: "5.0", unit: "%" },
-  { test_name: "Total IgE", value: "1.73", unit: "KU/L" },
-  { test_name: "Insulin", value: "9.42", unit: "mU/L" },
-  { test_name: "Free T4", value: "1.14", unit: "ng/dL" },
+  {
+    test_name: "Ferritin",
+    value: "28.9",
+    unit: "ug/L",
+  },
+  {
+    test_name: "Glikozile Hemoglobin (HbA1c)",
+    value: "5.0",
+    unit: "%",
+  },
+  {
+    test_name: "Total IgE",
+    value: "1.73",
+    unit: "KU/L",
+  },
+  {
+    test_name: "İnsülin",
+    value: "9.42",
+    unit: "mU/L",
+  },
+  {
+    test_name: "Serbest T4",
+    value: "1.14",
+    unit: "ng/dL",
+  },
 ];
 
 export default function LabInput({ onAnalyze, onCsv, loading }) {
